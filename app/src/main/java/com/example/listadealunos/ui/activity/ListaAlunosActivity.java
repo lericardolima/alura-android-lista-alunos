@@ -8,10 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.listadealunos.R;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.example.listadealunos.dao.SingletonAlunoDAO;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -20,11 +17,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_alunos);
 
-        List<String> alunos = new ArrayList<>(Arrays.asList("Lionel Messi", "Cristiano Ronaldo", "Neymar Junior"));
-
         ListView listViewAlunos = findViewById(R.id.activity_list_alunos);
-        listViewAlunos.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, alunos));
+        listViewAlunos.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, SingletonAlunoDAO.getInstance().listar()));
 
     }
-
 }
