@@ -1,5 +1,6 @@
 package com.example.listadealunos.ui.activity;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.listadealunos.R;
 import com.example.listadealunos.dao.SingletonAlunoDAO;
+import com.example.listadealunos.model.Aluno;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -35,11 +39,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         ListView listViewAlunos = findViewById(R.id.activity_list_alunos);
-        listViewAlunos.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, SingletonAlunoDAO.getInstance().listar()));
+        final List<Aluno> alunos = SingletonAlunoDAO.getInstance().listar();
+        listViewAlunos.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alunos));
         listViewAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("POSICAO_ALUNO", "onItemClick: " + position);
+                Aluno aluno = alunos.get(position);
+                Intent goToFormularioActivity = new Intent(ListaAlunosActivity.this, FormAlunoActivity.class);
+                goToFormularioActivity.putExtra("aluno", aluno);
+                startActivity(goToFormularioActivity);
             }
         });
     }

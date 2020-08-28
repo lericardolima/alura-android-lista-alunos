@@ -17,30 +17,54 @@ import com.example.listadealunos.model.Aluno;
 
 public class FormAlunoActivity extends AppCompatActivity {
 
-        @Override
-        protected void onCreate(@Nullable Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                setContentView(R.layout.activity_form_aluno);
+    private Aluno aluno;
 
-                final AlunoDAO alunoDAO = SingletonAlunoDAO.getInstance();
+    private EditText inputNome;
+    private EditText inputTelefone;
+    private EditText inputEmail;
+    private Button buttonSalvar;
 
-                final EditText inputNome = findViewById(R.id.activity_form_aluno_nome);
-                final EditText inputTelefone = findViewById(R.id.activity_form_aluno_telefone);
-                final EditText inputEmail = findViewById(R.id.activity_form_aluno_email);
+    private AlunoDAO alunoDAO;
 
-                Button buttonSalvar = findViewById(R.id.activity_form_aluno_salvar);
-                buttonSalvar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                final String nome = inputNome.getText().toString();
-                                final String telefone = inputTelefone.getText().toString();
-                                final String email = inputEmail.getText().toString();
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_form_aluno);
 
-                                Aluno aluno = new Aluno(nome, telefone, email);
-                                alunoDAO.salvar(aluno);
+        aluno = (Aluno) getIntent().getSerializableExtra("aluno");
 
-                                finish();
-                        }
-                });
+        if (aluno == null) {
+            aluno = new Aluno();
         }
+
+        inicializarCampos(aluno);
+        configurarBotao();
+    }
+
+    private void configurarBotao() {
+        buttonSalvar = findViewById(R.id.activity_form_aluno_salvar);
+        buttonSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aluno.setNome(inputNome.getText().toString());
+                aluno.setTelefone(inputTelefone.getText().toString());
+                aluno.setEmail(inputEmail.getText().toString());
+                alunoDAO.salvar(aluno);
+
+                finish();
+            }
+        });
+    }
+
+    private void inicializarCampos(Aluno aluno) {
+        inputNome = findViewById(R.id.activity_form_aluno_nome);
+        inputTelefone = findViewById(R.id.activity_form_aluno_telefone);
+        inputEmail = findViewById(R.id.activity_form_aluno_email);
+
+        inputNome.setText(aluno.getNome());
+        inputTelefone.setText(aluno.getTelefone());
+        inputEmail.setText(aluno.getEmail());
+
+        alunoDAO = SingletonAlunoDAO.getInstance();
+    }
 }
