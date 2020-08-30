@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.listadealunos.R;
 import com.example.listadealunos.dao.SingletonAlunoDAO;
 import com.example.listadealunos.model.Aluno;
+import com.example.listadealunos.model.constants.ConstantsExtra;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Aluno aluno = alunos.get(position);
                 Intent goToFormularioActivity = new Intent(ListaAlunosActivity.this, FormAlunoActivity.class);
-                goToFormularioActivity.putExtra("aluno", aluno);
+                goToFormularioActivity.putExtra(ConstantsExtra.EXTRA_ALUNO, aluno);
                 startActivity(goToFormularioActivity);
             }
         });

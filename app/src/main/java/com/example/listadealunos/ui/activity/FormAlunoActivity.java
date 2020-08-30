@@ -1,11 +1,9 @@
 package com.example.listadealunos.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +12,7 @@ import com.example.listadealunos.R;
 import com.example.listadealunos.dao.AlunoDAO;
 import com.example.listadealunos.dao.SingletonAlunoDAO;
 import com.example.listadealunos.model.Aluno;
+import com.example.listadealunos.model.constants.ConstantsExtra;
 
 public class FormAlunoActivity extends AppCompatActivity {
 
@@ -31,14 +30,17 @@ public class FormAlunoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_aluno);
 
-        aluno = (Aluno) getIntent().getSerializableExtra("aluno");
+        carregaAluno();
+        inicializarCampos();
+        configurarBotao();
+    }
 
-        if (aluno == null) {
+    private void carregaAluno() {
+        if (getIntent().hasExtra(ConstantsExtra.EXTRA_ALUNO)) {
+            aluno = (Aluno) getIntent().getSerializableExtra(ConstantsExtra.EXTRA_ALUNO);
+        } else {
             aluno = new Aluno();
         }
-
-        inicializarCampos(aluno);
-        configurarBotao();
     }
 
     private void configurarBotao() {
@@ -56,7 +58,7 @@ public class FormAlunoActivity extends AppCompatActivity {
         });
     }
 
-    private void inicializarCampos(Aluno aluno) {
+    private void inicializarCampos() {
         inputNome = findViewById(R.id.activity_form_aluno_nome);
         inputTelefone = findViewById(R.id.activity_form_aluno_telefone);
         inputEmail = findViewById(R.id.activity_form_aluno_email);

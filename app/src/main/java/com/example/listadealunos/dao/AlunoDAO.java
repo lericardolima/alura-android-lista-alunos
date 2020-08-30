@@ -17,12 +17,7 @@ public class AlunoDAO {
 
     public void salvar(Aluno aluno) {
 
-        Aluno alunoEditado = null;
-        for (Aluno alunoPersistido : alunos) {
-            if (alunoPersistido.getId() == aluno.getId()) {
-                alunoEditado = alunoPersistido;
-            }
-        }
+        Aluno alunoEditado = getAlunoByID(aluno.getId());
 
         if (alunoEditado != null) {
             int posicaoAluno = alunos.indexOf(alunoEditado);
@@ -33,6 +28,16 @@ public class AlunoDAO {
             alunos.add(aluno);
         }
 
+    }
+
+    private Aluno getAlunoByID(int id) {
+        Aluno aluno = null;
+        for (Aluno alunoPersistido : alunos) {
+            if (alunoPersistido.getId() == id) {
+                aluno = alunoPersistido;
+            }
+        }
+        return aluno;
     }
 
     public List<Aluno> listar() {
